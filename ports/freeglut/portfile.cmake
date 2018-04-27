@@ -41,9 +41,11 @@ string(REPLACE "pragma comment (lib, \"freeglutd.lib\")"
 file(WRITE ${CURRENT_PACKAGES_DIR}/include/GL/freeglut_std.h "${FREEGLUT_STDH}")
 
 # Rename static lib (otherwise it's incompatible with FindGLUT.cmake)
-if (VCPKG_LIBRARY_LINKAGE STREQUAL static)
-    file(RENAME ${CURRENT_PACKAGES_DIR}/lib/freeglut_static.lib ${CURRENT_PACKAGES_DIR}/lib/freeglut.lib)
-    file(RENAME ${CURRENT_PACKAGES_DIR}/debug/lib/freeglut_static.lib ${CURRENT_PACKAGES_DIR}/debug/lib/freeglut.lib)
+if(VCPKG_LIBRARY_LINKAGE STREQUAL "static")
+    if(NOT VCPKG_CMAKE_SYSTEM_NAME OR VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+        file(RENAME ${CURRENT_PACKAGES_DIR}/lib/freeglut_static.lib ${CURRENT_PACKAGES_DIR}/lib/freeglut.lib)
+        file(RENAME ${CURRENT_PACKAGES_DIR}/debug/lib/freeglut_static.lib ${CURRENT_PACKAGES_DIR}/debug/lib/freeglut.lib)
+    endif()
 endif()
 
 # Clean
